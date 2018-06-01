@@ -1,0 +1,77 @@
+menu "TishSerg's ESP32 REPL Configuration"
+
+config WIFI_SSID
+    string "WiFi SSID"
+	default "myssid"
+	help
+		SSID (network name) for the example to connect to.
+
+config WIFI_PASSWORD
+    string "WiFi Password"
+	default "mypassword"
+	help
+		WiFi password (WPA or WPA2) for the example to use.
+
+		Can be left blank if the network has no security set.
+
+config REPL_CMD_BUF_SIZE
+	int "Console command buffer size"
+	default 512
+	range 128 4096
+	help
+		Maximum command length user can input.
+		
+		Also used as message buffer by REPL.
+
+
+menu "Console UART Configuration"
+
+config CONSOLE_IO_UART_BAUDRATE
+	int "Console UART baudrate"
+	default 115200
+	range 1200 4000000
+	help
+		Baudrate to use in terminal interfacing with REPL console via UART
+
+choice CONSOLE_IO_UART_NUM
+	prompt "Console UART number"
+	default CONSOLE_IO_UART_NUM_1
+	help
+		UART peripheral number for REPL console. Note: UART_0 is debug/programming port.	
+config CONSOLE_IO_UART_NUM_0
+	bool "UART_0"		
+config CONSOLE_IO_UART_NUM_1
+	bool "UART_1"		
+config CONSOLE_IO_UART_NUM_2
+	bool "UART_2"
+endchoice
+
+config CONSOLE_IO_UART_SET_PINS
+	bool "Custom UART TX RX pins"
+	default y
+	help
+		Set UART pins explicitly. If not selected then UART_PIN_NO_CHANGE will be used.
+
+config CONSOLE_IO_UART_TX_IO
+	int "TX IO number"
+	depends on CONSOLE_IO_UART_SET_PINS
+	default 10
+	range 0 33
+	help
+		GPIO number to use as UART TX signal.
+		
+		Note: following numbers from the range are forbidden: 20, 24, 28-31
+
+config CONSOLE_IO_UART_RX_IO
+	int "RX IO number"
+	depends on CONSOLE_IO_UART_SET_PINS
+	default 9
+	range 0 39
+	help
+		GPIO number to use as UART RX signal.
+		
+		Note: following numbers from the range are forbidden: 20, 24, 28-31
+
+endmenu
+
+endmenu
